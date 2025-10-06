@@ -1,0 +1,50 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Recipe Book</h1>
+    <%= link_to "New Recipe", new_recipe_path, class: "btn btn-primary" %>
+  </div>
+
+  <% if notice %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+
+  <% if @recipes.any? %>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Title</th>
+            <th>Cook Time (minutes)</th>
+            <th>Difficulty</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @recipes.each do |recipe| %>
+            <tr>
+              <td><%= link_to recipe.title, recipe, class: "text-decoration-none" %></td>
+              <td><%= recipe.cook_time %></td>
+              <td>
+                <span class="badge <%= recipe.difficulty == 'Easy' ? 'bg-success' : recipe.difficulty == 'Medium' ? 'bg-warning' : 'bg-danger' %>">
+                  <%= recipe.difficulty %>
+                </span>
+              </td>
+              <td>
+                <%= link_to "View", recipe, class: "btn btn-sm btn-info" %>
+                <%= link_to "Edit", edit_recipe_path(recipe), class: "btn btn-sm btn-warning" %>
+                <%= button_to "Delete", recipe, method: :delete, data: { turbo_confirm: "Are you sure you want to delete this recipe?" }, class: "btn btn-sm btn-danger" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="alert alert-info">
+      No recipes yet. <%= link_to "Create your first recipe!", new_recipe_path %>
+    </div>
+  <% end %>
+</div>
